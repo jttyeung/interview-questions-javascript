@@ -1,5 +1,4 @@
-let express = require('express'),
-  app = express();
+let app = require('./app');
 
 
 // Routes
@@ -13,5 +12,5 @@ app.get('/', function(req, res) {
 let port = process.env.PORT || 3030;
 
 app.listen(port, function() {
-  console.log('App launched on port 3030.')
+  console.log('Server listening on port 3030.')
 })
