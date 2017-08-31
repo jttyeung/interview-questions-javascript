@@ -9,24 +9,30 @@ router.use(bodyParser.urlencoded({extended: true}));
 
 // Creates a new URL entry
 router.post('/url', (req, res) => {
+
   let url = req.body.url;
-  let html = '';
-  Url.create({
-    url: url,
-    html: http.get(url, (res) => {
+  console.log(url)
+  let html = 'test';
+
+  http.get(url, (res) => {
             res.on('data', (chunk) => {
               html += chunk;
             });
           }).on('error', (err) => {
             console.log("Got error: " + err.message);
-          })
+          });
+
+  Url.create({
+    url: 'https://www.google.com',
+    html: html
     // downloadHtml.getHtml(url)
-    //req.body.html
+    // req.body.html
   },
   (err, url) => {
     if (err) return res.status(500).send('There was an issue saving this URL\'s data in the database.');
     res.status(200).send(url);
   });
+
 });
 
 // Returns a URL data given an ID
