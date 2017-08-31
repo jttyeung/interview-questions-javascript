@@ -3,6 +3,6 @@ let express = require('express'),
   db = require('./db'),
   UrlController = require('./UrlController');
 
-app.use('/urls', UrlController);
+app.use('/', UrlController);
 
 module.exports = app;

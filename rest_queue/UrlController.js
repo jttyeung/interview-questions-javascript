@@ -10,7 +10,7 @@ module.exports = router;
 
 
 // Creates a new URL entry
-router.post('/task', function (req, res) {
+router.post('/url', function (req, res) {
   Url.create({
     url: req.body.url,
     html: req.body.html
@@ -22,10 +22,11 @@ router.post('/task', function (req, res) {
 });
 
 // Returns all URLs in the database
-router.get('/', function (req, res) {
-  Url.find({}, function (err, urls) {
-    if (err) return res.status(500).send('There was an issue finding all the urls.');
-    res.status(200).send(urls);
+router.get('/urls/:id', function (req, res) {
+  Url.findById(req.params.id, function (err, urlid) {
+    if (err) return res.status(500).send('There was an issue finding the id.');
+    if (!urlid) return res.status(404).send('No such id was found.')
+    res.status(200).send(urlid);
   });
 });
 
