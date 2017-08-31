@@ -1,4 +1,4 @@
-let mongoose = require('mongoose'),
+const mongoose = require('mongoose'),
   UrlSchema = new mongoose.Schema({
     url: String,
     html: String

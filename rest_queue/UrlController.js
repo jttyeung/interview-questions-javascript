@@ -1,29 +1,37 @@
-let express = require('express'),
+const express = require('express'),
   router = express.Router(),
-  bodyParser = require('body-parser');
+  bodyParser = require('body-parser'),
+  Url = require('./datamodel'),
+  http = require('http');
+  // downloadHtml = require('./downloadHtml');
 
 router.use(bodyParser.urlencoded({extended: true}));
 
-let Url = require('./datamodel')
-
-module.exports = router;
-
-
 // Creates a new URL entry
-router.post('/url', function (req, res) {
+router.post('/url', (req, res) => {
+  let url = req.body.url;
+  let html = '';
   Url.create({
-    url: req.body.url,
-    html: req.body.html
+    url: url,
+    html: http.get(url, (res) => {
+            res.on('data', (chunk) => {
+              html += chunk;
+            });
+          }).on('error', (err) => {
+            console.log("Got error: " + err.message);
+          })
+    // downloadHtml.getHtml(url)
+    //req.body.html
   },
-  function (err, url) {
-    if (err) return res.status(500).send("There was an issue saving this URL's data in the database.");
+  (err, url) => {
+    if (err) return res.status(500).send('There was an issue saving this URL\'s data in the database.');
     res.status(200).send(url);
   });
 });
 
 // Returns a URL data given an ID
-router.get('/urls/:id', function (req, res) {
-  Url.findById(req.params.id, function (err, urlid) {
+router.get('/urls/:id', (req, res) => {
+  Url.findById(req.params.id, (err, urlid) => {
     if (err) return res.status(500).send('There was an issue finding the id.');
     if (!urlid) return res.status(404).send('No such id was found.')
     res.status(200).send(urlid);
@@ -31,3 +39,21 @@ router.get('/urls/:id', function (req, res) {
 });
 
 module.exports = router;
+
+// let getHtml = (url) => {
+
+//   let options = {
+//     host: 'www.example.com',
+//     port: 80,
+//     path: '/',
+//   };
+
+//   http.get(options, (res) => {
+//     res.on('data', (body) => {
+//       return body;
+//     });
+//   }).on('error', (err) => {
+//     console.log("Got error: " + err.message);
+//   });
+
+// };
