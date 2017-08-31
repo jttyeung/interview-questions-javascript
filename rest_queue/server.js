@@ -1,13 +1,6 @@
 let app = require('./app');
 
 
-// Routes
-app.get('/', function(req, res) {
-    //
-})
-
-
-
 // Port Listener
 let port = process.env.PORT || 3030;
 
