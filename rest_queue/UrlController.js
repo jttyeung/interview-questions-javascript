@@ -21,7 +21,7 @@ router.post('/url', function (req, res) {
   });
 });
 
-// Returns all URLs in the database
+// Returns a URL data given an ID
 router.get('/urls/:id', function (req, res) {
   Url.findById(req.params.id, function (err, urlid) {
     if (err) return res.status(500).send('There was an issue finding the id.');
